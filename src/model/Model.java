@@ -1,8 +1,18 @@
+package model;
 // Sergio Sauceda, Taven Hathaway, Lugh Dunlap, Kevin Hernandez
 // Chess Game - CSCI-3331-001
 // 11/8/2024
 // Sets up board and stage
 
+import java.util.ArrayList;
+import java.util.List;
+
+import pieces.Bishop;
+import pieces.King;
+import pieces.Knight;
+import pieces.Pawn;
+import pieces.Queen;
+import pieces.Rook;
 
 public class Model {
     private ChessPiece[][] board;
@@ -110,4 +120,90 @@ public class Model {
     public String getCurrentTurn() {
         return currentTurn;
     }
+
+    public boolean checkForCheck(String color){
+        Position kingPosition = findKingPosition(color);
+        for(ChessPiece[] row : board){
+            for(ChessPiece piece: row){
+                if(piece !=null && !piece.getColor().equals(color)){
+                    if(piece.isValidMove(kingPosition, this)){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+
+    //finding king position method 
+
+    private Position findKingPosition(String color){
+        for (int row =0; row < 8; row++){
+            for(int col =0; col < 8; col++){
+                ChessPiece piece = board[row][col];
+                if(piece instanceof King && piece.getColor().equals(color)){
+                    return new Position(row, col);
+                }
+            }
+
+        }
+        return null;
+    }
+
+
+    //creating method for cheking checkmate, by returning boolean 
+
+    public boolean isCheckmate(String color) {
+        // Check if all possible moves of the player still leave their king in check
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                ChessPiece piece = board[row][col];
+                if (piece != null && piece.getColor().equals(color)) {
+                    List<Position> validMoves = getValidMovesForPiece(new Position(row, col));
+                    for (Position move : validMoves) {
+                        if (!wouldKingBeInCheckAfterMove(new Position(row, col), move)) {
+                            return false; // There's at least one move to get out of check
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+    
+
+
+    private boolean wouldKingBeInCheckAfterMove(Position from, Position to){
+        ChessPiece originalPiece = board[to.getRow()][to.getCol()];
+        board[to.getRow()][to.getCol()] = board[from.getRow()][from.getCol()];
+        board[from.getRow()][from.getCol()] = null;
+
+        boolean inCheck = checkForCheck(board[to.getRow()][to.getCol()].getColor());
+        board[from.getRow()][from.getCol()] = board[to.getRow()][to.getCol()];
+        board[to.getRow()][to.getCol()] = originalPiece;
+        return inCheck;
+    }
+
+    public List<Position> getValidMovesForPiece(Position position) {
+    List<Position> validMoves = new ArrayList<>();
+    ChessPiece piece = getPieceAt(position.getRow(), position.getCol());
+    
+    if (piece == null) {
+        return validMoves; // No piece at this position
+    }
+    
+    // Loop through all possible squares on the board
+    for (int row = 0; row < 8; row++) {
+        for (int col = 0; col < 8; col++) {
+            Position targetPosition = new Position(row, col);
+            if (piece.isValidMove(targetPosition, this) && isPathClear(position, targetPosition)) {
+                validMoves.add(targetPosition);
+            }
+        }
+    }
+    return validMoves;
+}
+
+   
 }

@@ -1,5 +1,10 @@
-public class Queen extends ChessPiece {
-    public Queen(Position position, String color) {
+package pieces;
+import model.ChessPiece;
+import model.Model;
+import model.Position;
+
+public class King extends ChessPiece {
+    public King(Position position, String color) {
         super(position, color);
     }
 
@@ -8,7 +13,8 @@ public class Queen extends ChessPiece {
         int rowDiff = Math.abs(newPosition.getRow() - position.getRow());
         int colDiff = Math.abs(newPosition.getCol() - position.getCol());
 
-        // Valid if moving in any direction (horizontally, vertically, or diagonally)
-        return (rowDiff == colDiff) || (rowDiff == 0 || colDiff == 0);
+        // Valid if moving one square in any direction
+        return rowDiff <= 1 && colDiff <= 1;
     }
 }
+

@@ -1,3 +1,8 @@
+package pieces;
+import model.ChessPiece;
+import model.Model;
+import model.Position;
+
 public class Bishop extends ChessPiece {
     public Bishop(Position position, String color) {
         super(position, color);

@@ -1,3 +1,8 @@
+package pieces;
+import model.ChessPiece;
+import model.Model;
+import model.Position;
+
 public class Rook extends ChessPiece {
     public Rook(Position position, String color) {
         super(position, color);

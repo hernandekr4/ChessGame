@@ -1,3 +1,4 @@
+package model;
 // Sergio Sauceda, Taven Hathaway, Lugh Dunlap, Kevin Hernandez
 // Chess Game - CSCI-3331-001
 // 11/8/2024
