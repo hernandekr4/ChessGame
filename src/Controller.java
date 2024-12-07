@@ -1,13 +1,9 @@
-package controller;
-// Sergio Sauceda, Taven Hathaway, Lugh Dunlap, Kevin Hernandez
-// Chess Game - CSCI-3331-001
-// 11/8/2024
-// Handles peice selection and movement.
 
+
+import Model.Model;
+import Model.Position;
 import javafx.scene.input.MouseEvent;
-import main.View;
-import model.Model;
-import model.Position;
+
 
 public class Controller {
     private Model model;
@@ -42,6 +38,8 @@ public class Controller {
             if (model.isMoveValid(selectedPosition, targetPosition)) {
                 model.movePiece(selectedPosition, targetPosition);
                 System.out.println("Moved piece to (" + row + ", " + col + ")");
+                // Notify the view to refresh
+                view.refreshBoard(model);
             } else {
                 System.out.println("Invalid move");
             }

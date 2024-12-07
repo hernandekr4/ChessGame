@@ -1,14 +1,9 @@
-package main;
-// Sergio Sauceda, Taven Hathaway,  Kevin Hernandez
-// Chess Game - CSCI-3331-001
-// 11/8/2024
-// Just launches the Game
-
-import controller.Controller;
+import Model.Model;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import model.Model;
+
+
 
 public class App extends Application {
     @Override

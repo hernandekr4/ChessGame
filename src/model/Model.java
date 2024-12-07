@@ -1,4 +1,4 @@
-package model;
+package Model;
 // Sergio Sauceda, Taven Hathaway, Lugh Dunlap, Kevin Hernandez
 // Chess Game - CSCI-3331-001
 // 11/8/2024
@@ -7,12 +7,13 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
-import pieces.Bishop;
-import pieces.King;
-import pieces.Knight;
-import pieces.Pawn;
-import pieces.Queen;
-import pieces.Rook;
+import Pieces.Bishop;
+import Pieces.ChessPiece;
+import Pieces.King;
+import Pieces.Knight;
+import Pieces.Pawn;
+import Pieces.Queen;
+import Pieces.Rook;
 
 public class Model {
     private ChessPiece[][] board;
@@ -203,6 +204,10 @@ public class Model {
         }
     }
     return validMoves;
+}
+
+public ChessPiece[][] getBoard() {
+    return board;
 }
 
    

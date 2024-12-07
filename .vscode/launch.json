@@ -1,7 +1,5 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+
     "version": "0.2.0",
     "configurations": [
         {
@@ -17,7 +15,6 @@
             "mainClass": "App",
             "projectName": "ChessGame_40f2bd61", 
             "vmArgs": "--module-path .//lib//javafx-sdk-22.0.2//lib --add-modules javafx.controls,javafx.fxml --enable-preview"
-
         }
     ]
 }

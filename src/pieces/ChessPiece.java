@@ -1,8 +1,11 @@
-package model;
+package Pieces;
 // Sergio Sauceda, Taven Hathaway, Lugh Dunlap, Kevin Hernandez
 // Chess Game - CSCI-3331-001
 // 11/8/2024
 // Abstract class for the peices.
+
+import Model.Model;
+import Model.Position;
 
 public abstract class ChessPiece {
     protected Position position;
