@@ -1,5 +1,5 @@
 package Model;
-// Sergio Sauceda, Taven Hathaway, Lugh Dunlap, Kevin Hernandez
+// Sergio Sauceda,  Kevin Hernandez, Taven Hathaway. 
 // Chess Game - CSCI-3331-001
 // 11/8/2024
 // Sets up board and stage
@@ -78,6 +78,15 @@ public class Model {
 
     // Checks if the path is clear for pieces that move along a path (Rook, Bishop, Queen)
     private boolean isPathClear(Position from, Position to) {
+
+        ChessPiece piece = getPieceAt(from.getRow(), from.getCol());
+
+
+              // **Knights do not need a clear path check**
+    if (piece instanceof Pieces.Knight) {
+        System.out.println("Skipping path check for knight.");
+        return true;
+    }
         int rowDiff = to.getRow() - from.getRow();
         int colDiff = to.getCol() - from.getCol();
         int rowStep = Integer.signum(rowDiff);
@@ -113,8 +122,41 @@ public class Model {
 
     // Checks if the move is valid based on piece rules and board state
     public boolean isMoveValid(Position from, Position to) {
+        /*
         ChessPiece piece = getPieceAt(from.getRow(), from.getCol());
         return piece != null && piece.isValidMove(to, this) && isPathClear(from, to);
+
+        */
+
+        // Ensure the move is within bounds
+    if (to.getRow() < 0 || to.getRow() >= 8 || to.getCol() < 0 || to.getCol() >= 8) {
+        System.out.println("Move is out of bounds!");
+        return false;
+    }
+
+    ChessPiece piece = getPieceAt(from.getRow(), from.getCol());
+    ChessPiece targetPiece = getPieceAt(to.getRow(), to.getCol());
+
+    // Ensure the piece exists and belongs to the current player
+    if (piece == null || !piece.getColor().equals(currentTurn)) {
+        System.out.println("Invalid piece selection or not your turn!");
+        return false;
+    }
+
+    // Ensure the target square is not occupied by a piece of the same color
+    if (targetPiece != null && targetPiece.getColor().equals(piece.getColor())) {
+        System.out.println("Target square occupied by your own piece!");
+        return false;
+    }
+
+    // Debug: Validate the move using the piece's specific rules
+    boolean isValid = piece.isValidMove(to, this);
+    System.out.println("Knight move validation result: " + isValid);
+
+    return isValid;
+
+
+
     }
 
     // Getter for current turn
@@ -209,6 +251,8 @@ public class Model {
 public ChessPiece[][] getBoard() {
     return board;
 }
+
+
 
    
 }
