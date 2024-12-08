@@ -1,8 +1,10 @@
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
+import javafx.scene.control.Button;
 import Model.Model;
 import Pieces.ChessPiece;
 import javafx.scene.image.Image;
@@ -13,15 +15,21 @@ import javafx.scene.text.Font;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
 import Model.Position;
+import java.util.function.Consumer;
 
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+
+
+
+
     
 public class View {
     private GridPane boardUI;
     private Model model; 
     private VBox root;
     private Label statusLabel;
+    private Button quitButton;
+    private Button restartButton;
+    private HBox buttonBox;
 
 
     public View(Model model) {
@@ -29,10 +37,17 @@ public class View {
         boardUI = new GridPane();
         statusLabel = new Label("White Turn's");
         statusLabel.setFont(new Font("Arial", 20));
-        root =  new VBox(boardUI, statusLabel);
+
+              
+        quitButton = new Button("Quit");
+        restartButton = new Button("Restart");
+
+        buttonBox = new HBox(20, restartButton, quitButton); // Horizontal box to hold buttons
+        buttonBox.setSpacing(20); // Add spacing between the buttons
+
+        root =  new VBox(10, boardUI, statusLabel, buttonBox);
         createBoardUI();
 
-        //root.getChildren().addAll(boardUI, statusLabel);
     }
 
 
@@ -80,23 +95,13 @@ public class View {
 
 
      // Return the name of the image file (without extension) for each piece
-     private String getPieceName(int row, int col) {
-        if (row == 1) return "pawn_white";
-        if (row == 6) return "pawn_black";
-        
-        // Assign major pieces for row 0 and row 7
-        if (row == 0 || row == 7) {
-            String color = row == 0 ? "white" : "black";
-            switch (col) {
-                case 0: case 7: return "rook_" + color;
-                case 1: case 6: return "knight_" + color;
-                case 2: case 5: return "bishop_" + color;
-                case 3: return row == 0 ? "queen_white" : "queen_black";
-                case 4: return row == 0 ? "king_white" : "king_black";
-            }
-        }
-        
-        return null; // No piece on this tile
+     private ImageView getPieceName(ChessPiece piece ) {
+        String fileName = piece.getColor() + "_" + piece.getClass().getSimpleName().toLowerCase() + ".png";
+        Image image = new Image(getClass().getResource("/resources/images/" + fileName).toExternalForm());
+        ImageView imageView = new ImageView(image);
+        imageView.setFitHeight(75);
+        imageView.setFitWidth(75);
+        return imageView;
     }
 
  
@@ -185,6 +190,14 @@ private StackPane getSquareAt(Position position) {
         }
     }
     return null;
+}
+
+public void setRestartAction(Runnable restartAction) {
+    restartButton.setOnAction(e -> restartAction.run());
+}
+
+public void setQuitAction(Runnable quitAction) {
+    quitButton.setOnAction(e -> quitAction.run());
 }
 
     
