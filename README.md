@@ -108,6 +108,17 @@ If you are the creator of these images and require additional attribution or lic
 - **Path-Checking Logic**: Ensures rooks, bishops, and queens cannot jump over pieces.
 - **Knight Movement**: Knights "jump" correctly and are not blocked by path logic.
 
+
+## 🆕 **New Feature: Quit & Restart Buttons**
+This update introduces **Quit** and **Restart** buttons to the Chess Game application. Allows players to restart the game or exit the application at any point.
+
+### 📌 **Buttons Overview**
+| **Button**  | **Description**                                  |
+|-------------|--------------------------------------------------|
+| **Restart** | Resets the game to its initial state, reloading the chessboard. |
+| **Quit**    | Closes the application.                          |
+
+
 ---
 
 ## **Technologies Used**
