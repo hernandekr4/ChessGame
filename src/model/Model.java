@@ -60,7 +60,7 @@ public class Model {
     }
 
     // Moves a piece if valid, otherwise returns false
-    public boolean movePiece(Position from, Position to) {
+    public String movePiece(Position from, Position to) {
         ChessPiece piece = getPieceAt(from.getRow(), from.getCol());
 
         if (piece != null && piece.getColor().equals(currentTurn) && piece.isValidMove(to, this) && isPathClear(from, to)) {
@@ -70,10 +70,18 @@ public class Model {
             board[to.getRow()][to.getCol()] = piece; // Move piece to new position
             board[from.getRow()][from.getCol()] = null; // Clear old position
             piece.setPosition(to); // Update piece position
+
+            if(piece instanceof Pawn){
+                int lastRow = piece.getColor().equals("white") ? 7:0;
+                if(to.getRow() == lastRow){
+                    return "promote";
+                }
+            }
+
             toggleTurn(); // Switch turn to the other player
-            return true;
+            return "moved";
         }
-        return false;
+        return "invalid";
     }
 
     // Checks if the path is clear for pieces that move along a path (Rook, Bishop, Queen)
@@ -116,7 +124,7 @@ public class Model {
     }
 
     // Switches the turn to the other player
-    private void toggleTurn() {
+    public void toggleTurn() {
         currentTurn = currentTurn.equals("white") ? "black" : "white";
     }
 
@@ -218,13 +226,23 @@ public class Model {
 
 
     private boolean wouldKingBeInCheckAfterMove(Position from, Position to){
+        ChessPiece movingPiece = board[from.getRow()][from.getCol()];
         ChessPiece originalPiece = board[to.getRow()][to.getCol()];
-        board[to.getRow()][to.getCol()] = board[from.getRow()][from.getCol()];
+        
+        //temporarily make the move 
+        board[to.getRow()][to.getCol()] = movingPiece;
         board[from.getRow()][from.getCol()] = null;
 
-        boolean inCheck = checkForCheck(board[to.getRow()][to.getCol()].getColor());
-        board[from.getRow()][from.getCol()] = board[to.getRow()][to.getCol()];
+        boolean inCheck = false;
+
+        if(movingPiece != null){
+            inCheck = checkForCheck(movingPiece.getColor());
+        }
+
+        //undo the move 
+        board[from.getRow()][from.getCol()] = movingPiece;
         board[to.getRow()][to.getCol()] = originalPiece;
+
         return inCheck;
     }
 
@@ -251,6 +269,60 @@ public class Model {
 public ChessPiece[][] getBoard() {
     return board;
 }
+
+public String isKingCaptured() {
+    boolean whiteKingPresent = false;
+    boolean blackKingPresent = false;
+    
+    for (ChessPiece[] row : board) {
+        for (ChessPiece piece : row) {
+            if (piece instanceof King) {
+                if (piece.getColor().equals("white")) {
+                    whiteKingPresent = true;
+                } else if (piece.getColor().equals("black")) {
+                    blackKingPresent = true;
+                }
+            }
+        }
+    }
+
+    if (!whiteKingPresent) {
+        return "black";
+    } else if (!blackKingPresent) {
+        return "white";
+    } else {
+        return null; // No king has been captured
+    }
+}
+
+public void promotePawn(Position position, String pieceType) {
+    ChessPiece newPiece = null;
+    String color = currentTurn.equals("white") ? "white" : "black";
+
+    switch (pieceType.toLowerCase()) {
+        case "queen":
+            newPiece = new Queen(position, color);
+            break;
+        case "rook":
+            newPiece = new Rook(position, color);
+            break;
+        case "bishop":
+            newPiece = new Bishop(position, color);
+            break;
+        case "knight":
+            newPiece = new Knight(position, color);
+            break;
+        default:
+            System.out.println("Invalid promotion choice: " + pieceType);
+            return; // Exit method if invalid promotion piece is given
+    }
+
+    board[position.getRow()][position.getCol()] = newPiece; // Replace pawn with new piece
+}
+
+
+
+
 
 
 

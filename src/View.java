@@ -1,5 +1,4 @@
-
-
+import javafx.scene.layout.VBox;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
@@ -8,18 +7,35 @@ import Model.Model;
 import Pieces.ChessPiece;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.animation.PauseTransition;
+import javafx.scene.text.Font;
+import javafx.scene.control.Label;
+import javafx.util.Duration;
+import Model.Position;
+
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
     
 public class View {
     private GridPane boardUI;
     private Model model; 
+    private VBox root;
+    private Label statusLabel;
 
 
-    public View() {
+    public View(Model model) {
+        this.model = model;
         boardUI = new GridPane();
-        model = new Model(); // Create a new model for initial positions
-
+        statusLabel = new Label("White Turn's");
+        statusLabel.setFont(new Font("Arial", 20));
+        root =  new VBox(boardUI, statusLabel);
         createBoardUI();
+
+        //root.getChildren().addAll(boardUI, statusLabel);
     }
+
+
 
     // Create the chessboard grid
     private void createBoardUI() {
@@ -48,15 +64,11 @@ public class View {
     }
 
       // Get the correct chess piece image for the initial board setup
-      private ImageView getPieceImage(int row, int col) {
-        String pieceName = getPieceName(row, col);
-        
-        if (pieceName == null) {
-            return null; // No piece on this tile
-        }
+      private ImageView getPieceImage(ChessPiece piece) {
+        String fileName = piece.getColor() + "_"+ piece.getClass().getSimpleName().toLowerCase()+ ".png";
         
         // Load image using the class loader
-        Image image = new Image(getClass().getResource("/resources/images/" + pieceName + ".png").toExternalForm());
+        Image image = new Image(getClass().getResource("/resources/images/" + fileName).toExternalForm());
         
         // Add the image to the ImageView and resize it to fit the tile
         ImageView imageView = new ImageView(image);
@@ -65,6 +77,8 @@ public class View {
         
         return imageView;
     }
+
+
      // Return the name of the image file (without extension) for each piece
      private String getPieceName(int row, int col) {
         if (row == 1) return "pawn_white";
@@ -85,20 +99,7 @@ public class View {
         return null; // No piece on this tile
     }
 
-    private ImageView getPieceImage(ChessPiece piece) {
-        // Build the file name dynamically
-        String fileName = piece.getColor() + "_" + piece.getClass().getSimpleName().toLowerCase() + ".png";
-
-        // Load the image
-        Image image = new Image(getClass().getResource("/resources/images/" + fileName).toExternalForm());
-
-        // Set image properties
-        ImageView imageView = new ImageView(image);
-        imageView.setFitHeight(75);
-        imageView.setFitWidth(75);
-        return imageView;
-    }
-
+ 
 
     public void refreshBoard(Model model) {
         boardUI.getChildren().clear(); // Clear the board UI
@@ -123,6 +124,69 @@ public class View {
             }
         }
     }
+
+    public void endGame(String winnerColor){
+        displayWinner(winnerColor);
+        boardUI.setDisable(true);
+    }
+
+
+    public void highlightSquare(Position position, Color color){
+        StackPane square = getSquareAt(position);
+        if(square != null){
+            Rectangle tile = (Rectangle) square.getChildren().get(0);
+            tile.setFill(color);
+        }
+    }
+
+
+    public void clearHighlight(Position position){
+        StackPane square = getSquareAt(position);
+        if(square !=null){
+            Rectangle tile =(Rectangle) square.getChildren().get(0);
+            tile.setFill((position.getRow()+ position.getCol()) % 2 ==0? Color.BEIGE : Color.BROWN);
+        }
+    }
+
+    public VBox getRoot() {
+    return root; // Return the entire layout, not just the board
+}
+
+
+
+    public void flashInvalidSquare(Position position){
+        highlightSquare(position, Color.RED);
+        statusLabel.setText("Invalid move");
+        PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
+        pause.setOnFinished(event -> {
+            clearHighlight(position);
+            statusLabel.setText(model.getCurrentTurn().equals("white") ? "White's Turn" : "Black's Turn");
+        });
+        pause.play();
+    }
+
+    // Method to update the status label with the current turn
+public void updateTurn(String currentTurn) {
+    statusLabel.setText(currentTurn.equals("white") ? "White's Turn" : "Black's Turn");
+}
+
+// Method to display the winner
+public void displayWinner(String winner) {
+    statusLabel.setText(winner + " Wins!");
+    boardUI.setDisable(true);
+}
+
+// Helper method to get a square at a specific position
+private StackPane getSquareAt(Position position) {
+    for (javafx.scene.Node node : boardUI.getChildren()) {
+        if (GridPane.getRowIndex(node) == position.getRow() &&
+            GridPane.getColumnIndex(node) == position.getCol()) {
+            return (StackPane) node;
+        }
+    }
+    return null;
+}
+
     
 }
 

@@ -1,6 +1,8 @@
 # **Chess Game**
 
-**Chess Game** is an interactive chess application built with **JavaFX**. It features a classic 8x8 chessboard, image-based chess pieces, and fully validated piece movement according to official chess rules. Players can click to select and move pieces, with support for all chess pieces (pawns, rooks, knights, bishops, queens, and kings). The game enforces turn-based play, handles valid/invalid moves, and dynamically updates the visual board after every move.
+**Chess Game** This is an interactive chess application built with **JavaFX**. It features a classic 8x8 chessboard, image-based chess pieces, and fully validated piece movement according to official chess rules. Players can click to select and move pieces, with support for all chess pieces (pawns, rooks, knights, bishops, queens, and kings). The game enforces turn-based play, handles valid/invalid moves, and dynamically updates the visual board after every move.
+
+Its officially recognized as a strategy board game where two players take turns moving pieces on a checkered board to checkmate their opponent's king. 
 
 ---
 
@@ -92,9 +94,6 @@ If you are the creator of these images and require additional attribution or lic
 - [How to Play](#how-to-play)
 - [Design Choices](#design-choices)
 - [Known Bugs](#known-bugs)
-- [Group Contributions](#group-contributions)
-- [Debugging Collaborators](#debugging-collaborators)
-- [How to Run](#how-to-run)
 - [Credits](#credits)
 
 ---

@@ -10,19 +10,32 @@ public class Pawn extends ChessPiece {
 
     @Override
     public boolean isValidMove(Position newPosition, Model model) {
+        if(newPosition == null){
+            return false;
+        }
+
         int rowDiff = newPosition.getRow() - position.getRow();
-        int colDiff = Math.abs(newPosition.getCol() - position.getCol());
+        int colDiff = newPosition.getCol() - position.getCol();
+        ChessPiece targetPiece = model.getPieceAt(newPosition.getRow(), newPosition.getCol());
+
+        int direction = color.equals("white") ? 1: -1;
 
         // Moving forward (1 square forward, or 2 if on starting row)
-        if (colDiff == 0) {
-            if (color.equals("white")) {
-                return (rowDiff == 1 || (position.getRow() == 1 && rowDiff == 2));
-            } else { // Black pawn moves downwards
-                return (rowDiff == -1 || (position.getRow() == 6 && rowDiff == -2));
+        if(colDiff == 0 && targetPiece == null){
+            if(rowDiff == direction){
+                return true;
+            }
+
+            if(position.getRow() == (color.equals("white") ? 1:6) && rowDiff == 2 * direction){
+                Position intermediatePosition = new Position(position.getRow()+ direction, position.getCol());
+                return model.getPieceAt(intermediatePosition.getRow(), intermediatePosition.getCol()) == null;
             }
         }
 
-        // Diagonal capture
-        return colDiff == 1 && ((color.equals("white") && rowDiff == 1) || (color.equals("black") && rowDiff == -1));
-    }
+        if(Math.abs(colDiff) ==1 && rowDiff == direction && targetPiece != null && !targetPiece.getColor().equals(color)){
+            return true;
+        }
+        return false;
+
+        }
 }

@@ -12,11 +12,7 @@ public class Knight extends ChessPiece {
         int rowDiff = Math.abs(newPosition.getRow() - position.getRow());
         int colDiff = Math.abs(newPosition.getCol() - position.getCol());
 
-        // Debugging output
-        System.out.println("Knight move from (" + position.getRow() + ", " + position.getCol() + 
-                           ") to (" + newPosition.getRow() + ", " + newPosition.getCol() + 
-                           ") - RowDiff: " + rowDiff + ", ColDiff: " + colDiff);
-
+    
          // Valid if moving in an "L" shape
          if ((rowDiff == 2 && colDiff == 1) || (rowDiff == 1 && colDiff == 2)) {
             // Ensure the target square is either empty or occupied by an opponent

@@ -10,11 +10,11 @@ public class App extends Application {
     public void start(Stage primaryStage) {
         // Instantiate Model, View, and Controller
         Model model = new Model();
-        View view = new View();
+        View view = new View(model);
         Controller controller = new Controller(model, view);
 
         // Set up the Scene and primary Stage
-        Scene scene = new Scene(view.getBoardUI(), 600, 600);
+        Scene scene = new Scene(view.getRoot(), 600, 650);
         primaryStage.setTitle("Chess Game");
         primaryStage.setScene(scene);
         primaryStage.show();
