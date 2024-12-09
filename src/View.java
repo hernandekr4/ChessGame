@@ -11,6 +11,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.animation.PauseTransition;
+import javafx.application.Platform;
+import javafx.geometry.Pos;
 import javafx.scene.text.Font;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
@@ -42,9 +44,14 @@ public class View {
         quitButton = new Button("Quit");
         restartButton = new Button("Restart");
 
-        buttonBox = new HBox(20, restartButton, quitButton); // Horizontal box to hold buttons
-        buttonBox.setSpacing(20); // Add spacing between the buttons
+        restartButton.setOnAction(e -> restartGame());
+        quitButton.setOnAction(e -> quitGame());
+    
 
+         HBox buttonBox = new HBox(10, restartButton, quitButton); 
+         buttonBox.setAlignment(Pos.CENTER);
+
+        
         root =  new VBox(10, boardUI, statusLabel, buttonBox);
         createBoardUI();
 
@@ -199,6 +206,19 @@ public void setRestartAction(Runnable restartAction) {
 public void setQuitAction(Runnable quitAction) {
     quitButton.setOnAction(e -> quitAction.run());
 }
+
+private void restartGame() {
+    model.reset(); // Reset model
+    refreshBoard(model); // Refresh the board
+    statusLabel.setText("White Turn's");
+    boardUI.setDisable(false); // Enable board interactions
+}
+
+private void quitGame() {
+    Platform.exit();
+}
+
+
 
     
 }

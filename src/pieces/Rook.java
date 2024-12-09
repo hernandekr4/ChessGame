@@ -9,6 +9,10 @@ public class Rook extends ChessPiece {
 
     @Override
     public boolean isValidMove(Position newPosition, Model model) {
+
+        if (newPosition == null) {
+            return false; // Invalid move
+        }
         int rowDiff = newPosition.getRow() - position.getRow();
         int colDiff = newPosition.getCol() - position.getCol();
 

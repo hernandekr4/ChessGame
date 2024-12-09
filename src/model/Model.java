@@ -92,7 +92,7 @@ public class Model {
 
               // **Knights do not need a clear path check**
     if (piece instanceof Pieces.Knight) {
-        System.out.println("Skipping path check for knight.");
+        //Skipping path check for knight
         return true;
     }
         int rowDiff = to.getRow() - from.getRow();
@@ -320,6 +320,13 @@ public void promotePawn(Position position, String pieceType) {
     board[position.getRow()][position.getCol()] = newPiece; // Replace pawn with new piece
 }
 
+
+
+public void reset() {
+    board = new ChessPiece[8][8];
+    currentTurn = "white";
+    initializePieces();
+}
 
 
 
