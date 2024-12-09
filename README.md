@@ -133,4 +133,31 @@ This update introduces **Quit** and **Restart** buttons to the Chess Game applic
 - **Git** (to clone the repository)
 - **VS Code** (used)
 
+# Chess Game Challenges and Solutions
+
+## Challenges Faced and Solutions
+
+### 1. King Highlighting Incorrectly for Check
+- **Challenge:** The king's square was highlighted as in check even when pieces blocked the attack.
+- **Approach:** Enhanced the `checkForCheck` method to verify path clearance for long-range pieces like bishops, rooks, and queens before identifying check status.
+
+### 2. Status Messages Not Updating for Player Turns
+- **Challenge:** The status message failed to update after a valid move, causing confusion about the current turn.
+
+- **Approach:** Ensured the `updateTurn` method is called consistently after each valid move, with proper integration into the game flow.
+
+### 3. Pawn Promotion Logic
+- **Challenge:** Pawn promotion was inconsistent and caused errors in string comparisons.
+- **Approach:** Implemented a flexible dialog for selecting promotion pieces and adjusted logic for case-insensitive string handling.
+
+### 4. Debug Logs for Irrelevant Pieces
+- **Challenge:** Debug logs for knights were appearing during moves unrelated to them, cluttering the console.
+
+- **Approach:** Refined debug logging to activate only for relevant pieces during the active player’s turn.
+
+
+### 5. Game End Conditions
+- **Challenge:** The game lacked proper handling for checkmate and king capture scenarios.
+
+- **Approach:** Added logic to detect checkmate by evaluating all legal moves and implemented status updates to notify players of the game result.
 
