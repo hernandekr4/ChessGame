@@ -1,5 +1,5 @@
 package Model;
-// Sergio Sauceda, Taven Hathaway, Lugh Dunlap, Kevin Hernandez
+// Sergio Sauceda, Taven Hathaway, Kevin Hernandez
 // Chess Game - CSCI-3331-001
 // 11/8/2024
 // The Position class holds the coordinates in two integer values as rows and cols, representing a specific square on the chessboard.
