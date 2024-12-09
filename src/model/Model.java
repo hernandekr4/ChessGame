@@ -174,10 +174,14 @@ public class Model {
 
     public boolean checkForCheck(String color){
         Position kingPosition = findKingPosition(color);
+        if (kingPosition == null) {
+            return false; // No king found
+        }
         for(ChessPiece[] row : board){
             for(ChessPiece piece: row){
                 if(piece !=null && !piece.getColor().equals(color)){
                     if(piece.isValidMove(kingPosition, this)){
+                        System.out.println(piece.getClass().getSimpleName() + " puts the King in check!");
                         return true;
                     }
                 }
@@ -226,6 +230,9 @@ public class Model {
 
 
     private boolean wouldKingBeInCheckAfterMove(Position from, Position to){
+        if (from == null || to == null) {
+            return false; // Invalid positions
+        }
         ChessPiece movingPiece = board[from.getRow()][from.getCol()];
         ChessPiece originalPiece = board[to.getRow()][to.getCol()];
         
@@ -233,11 +240,8 @@ public class Model {
         board[to.getRow()][to.getCol()] = movingPiece;
         board[from.getRow()][from.getCol()] = null;
 
-        boolean inCheck = false;
 
-        if(movingPiece != null){
-            inCheck = checkForCheck(movingPiece.getColor());
-        }
+        boolean inCheck = checkForCheck(movingPiece.getColor());
 
         //undo the move 
         board[from.getRow()][from.getCol()] = movingPiece;

@@ -4,6 +4,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import Model.Model;
 import Pieces.ChessPiece;
@@ -217,6 +218,16 @@ private void restartGame() {
 private void quitGame() {
     Platform.exit();
 }
+
+
+public void showCheckmateDialog(String winningPlayer) {
+    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    alert.setTitle("Checkmate");
+    alert.setHeaderText("Game Over");
+    alert.setContentText("Checkmate! " + winningPlayer + " wins!");
+    alert.showAndWait();
+}
+
 
 
 

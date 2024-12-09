@@ -9,6 +9,10 @@ public class Bishop extends ChessPiece {
 
     @Override
     public boolean isValidMove(Position newPosition, Model model) {
+
+        if (newPosition == null) {
+            return false; // Invalid move
+        }
         int rowDiff = Math.abs(newPosition.getRow() - position.getRow());
         int colDiff = Math.abs(newPosition.getCol() - position.getCol());
 
