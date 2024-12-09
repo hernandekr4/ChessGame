@@ -25,4 +25,8 @@ public abstract class ChessPiece {
     public String getColor() {
         return color;
     }
+
+    public Position getPosition() {
+        return position; 
+    }
 }

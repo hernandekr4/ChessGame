@@ -84,13 +84,16 @@ public class Controller {
                     return; // End the game
                 }
     
-                // **Check Detection**
-                if (model.checkForCheck("white")) {
-                    view.updateTurn("Check on White King!");
-                } else if (model.checkForCheck("black")) {
-                    view.updateTurn("Check on Black King!");
-                }
-    
+                // After a move, check for checks
+if (model.checkForCheck("white")) {
+    view.updateTurn("Check on White King!");
+    view.highlightCheck(model.findKingPosition("white")); // Highlight white king in check
+} else if (model.checkForCheck("black")) {
+    view.updateTurn("Check on Black King!");
+    view.highlightCheck(model.findKingPosition("black")); // Highlight black king in check
+} else {
+    view.updateTurn(model.getCurrentTurn().equals("white") ? "White's Turn" : "Black's Turn");
+}
             } 
             else {
                 // Flash the square red and display "Invalid move"

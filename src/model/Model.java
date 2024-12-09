@@ -86,7 +86,10 @@ public class Model {
 
     // Checks if the path is clear for pieces that move along a path (Rook, Bishop, Queen)
     private boolean isPathClear(Position from, Position to) {
-
+        if (from == null || to == null) {
+            return false; // Invalid positions
+        }
+    
         ChessPiece piece = getPieceAt(from.getRow(), from.getCol());
 
 
@@ -97,12 +100,15 @@ public class Model {
     }
         int rowDiff = to.getRow() - from.getRow();
         int colDiff = to.getCol() - from.getCol();
+
+
         int rowStep = Integer.signum(rowDiff);
         int colStep = Integer.signum(colDiff);
 
         // Check each square along the path to see if it's occupied
         int row = from.getRow() + rowStep;
         int col = from.getCol() + colStep;
+
         while (row != to.getRow() || col != to.getCol()) {
             if (board[row][col] != null) {
                 return false; // Path is blocked
@@ -180,10 +186,11 @@ public class Model {
         for(ChessPiece[] row : board){
             for(ChessPiece piece: row){
                 if(piece !=null && !piece.getColor().equals(color)){
-                    if(piece.isValidMove(kingPosition, this)){
-                        System.out.println(piece.getClass().getSimpleName() + " puts the King in check!");
-                        return true;
-                    }
+                    if (piece.isValidMove(kingPosition, this) &&
+                    (!(piece instanceof Pieces.Knight) && isPathClear(piece.getPosition(), kingPosition) || piece instanceof Pieces.Knight)) {
+                    System.out.println(piece.getClass().getSimpleName() + " threatens the King!");
+                    return true;
+                }
                 }
             }
         }
@@ -193,7 +200,7 @@ public class Model {
 
     //finding king position method 
 
-    private Position findKingPosition(String color){
+    public Position findKingPosition(String color){
         for (int row =0; row < 8; row++){
             for(int col =0; col < 8; col++){
                 ChessPiece piece = board[row][col];
@@ -205,6 +212,8 @@ public class Model {
         }
         return null;
     }
+
+    
 
 
     //creating method for cheking checkmate, by returning boolean 

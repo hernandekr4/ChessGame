@@ -179,9 +179,18 @@ public class View {
     }
 
     // Method to update the status label with the current turn
-public void updateTurn(String currentTurn) {
-    statusLabel.setText(currentTurn.equals("white") ? "White's Turn" : "Black's Turn");
-}
+
+    public void updateTurn(String currentTurn) {
+        if (currentTurn.equals("white")) {
+            statusLabel.setText("White's Turn");
+        } else if (currentTurn.equals("black")) {
+            statusLabel.setText("Black's Turn");
+        } else {
+            statusLabel.setText(currentTurn); // Handle other status messages like "Check!"
+        }
+    }
+    
+
 
 // Method to display the winner
 public void displayWinner(String winner) {
@@ -227,6 +236,15 @@ public void showCheckmateDialog(String winningPlayer) {
     alert.setContentText("Checkmate! " + winningPlayer + " wins!");
     alert.showAndWait();
 }
+
+public void highlightCheck(Position kingPosition) {
+    StackPane square = getSquareAt(kingPosition);
+    if (square != null) {
+        Rectangle tile = (Rectangle) square.getChildren().get(0);
+        tile.setFill(Color.RED); // Highlight the square in red
+    }
+}
+
 
 
 
